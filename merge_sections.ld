@@ -11,9 +11,6 @@ SECTIONS
     .rodata.cst16 : {
         *(.rodata.cst16*)
     }
-    .rodata : {
-        *(.rodata*)
-    }
     .data.rel.ro : {
         *(.data.rel.ro*)
     }
