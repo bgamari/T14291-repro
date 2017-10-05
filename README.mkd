@@ -9,6 +9,8 @@ Curiously `ld.bfd` seems to work fine.
 
 The linker script seems to be critical to both failures.
 
+## ld.gold behavior
+
 In the case of `ld.gold` the linker produces an object file that contains an
 incorrect definition for `r1Cy_closure`. The correct output should be:
 ```
@@ -28,3 +30,12 @@ However, `ld.gold` 1.14 seems to produce,
 ```
 
 This was the cause of [GHC bug #14291](https://ghc.haskell.org/trac/ghc/ticket/14291).
+
+
+## ld.lld behavior
+
+I suspect that the lld crash is somewhat unrelated to #14291. Removing the
+`rodata.cst16` output secction from the linker script seems to allow it to 
+produce correct output without crashing. Given that there are no `rodata.cst16`
+sections in the input files, I suspect this is just poor error handling on the
+part of `lld`: we ask it to merge sections that do not exist.
