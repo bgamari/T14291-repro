@@ -31,6 +31,8 @@ However, `ld.gold` 1.14 seems to produce,
 
 This was the cause of [GHC bug #14291](https://ghc.haskell.org/trac/ghc/ticket/14291).
 
+The bug was submitted upstream as
+[#22266](https://sourceware.org/bugzilla/show_bug.cgi?id=22266).
 
 ## ld.lld behavior
 
@@ -39,3 +41,5 @@ I suspect that the lld crash is somewhat unrelated to #14291. Removing the
 produce correct output without crashing. Given that there are no `rodata.cst16`
 sections in the input files, I suspect this is just poor error handling on the
 part of `lld`: we ask it to merge sections that do not exist.
+
+This was submitted upsteam as [#34853](https://bugs.llvm.org/show_bug.cgi?id=34853).
