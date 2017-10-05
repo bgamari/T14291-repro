@@ -12,5 +12,5 @@ $ld \
     \
     Concurrent.o Base.o Err.o
 
-objdump -Dx out.o | grep -A 10 r1Cy
+objdump -Dx out.o | grep -A 10 '<r1Cy_closure>'
 

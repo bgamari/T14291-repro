@@ -1,0 +1,30 @@
+# GHC #14291 repro
+
+This testcase causes linkers to go crazy. Namely,
+
+ * `ld.gold` produces incorrect output
+ * `ld.lld` 5.0 segfaults
+
+Curiously `ld.bfd` seems to work fine.
+
+The linker script seems to be critical to both failures.
+
+In the case of `ld.gold` the linker produces an object file that contains an
+incorrect definition for `r1Cy_closure`. The correct output should be:
+```
+0000000000001700 <r1Cy_closure>:
+        ...
+                        1700: R_X86_64_64       base_GHCziStackziTypes_FreezzeCallStack_con_info
+                        1708: R_X86_64_64       base_GHCziStackziTypes_EmptyCallStack_closure+0x1
+    1710:       03 00                   add    (%rax),%eax
+    1712:       00 00                   add    %al,(%rax)
+    1714:       00 00                   add    %al,(%rax)
+```
+However, `ld.gold` 1.14 seems to produce,
+```
+0000000000001548 <r1Cy_closure>:
+        ...
+                        1548: R_X86_64_64       .text+0xb9c8
+```
+
+This was the cause of [GHC bug #14291](https://ghc.haskell.org/trac/ghc/ticket/14291).
